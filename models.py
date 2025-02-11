@@ -8,8 +8,7 @@ def eliminar_parentesis(text):
 def eliminar_3(serie):
     return serie.apply(lambda x: x[3:])
 
-#Perimite casting de str a float
-def pasar_a_folat(serie):
+def pasar_a_float(serie):
     serie = serie.str.replace(",", ".")
     try:
         serie = serie.astype(float)
@@ -18,7 +17,7 @@ def pasar_a_folat(serie):
     return serie
 
 #Funcion para sustituir los Nan por sus modas correspondientes
-def llenar_nan_con_moda(serie):
+def llenar_nan_moda(serie):
     moda= serie.mode()[0]
     return serie.fillna(moda)
 
