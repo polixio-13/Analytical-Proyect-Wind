@@ -13,7 +13,7 @@ df= pd.DataFrame(data_24)
 print("-"*100)
 print(f"la informacion del dataframe es: \n")
 df.info()
-
+df.head()
 
 #Aplicar funcion applymap para aplicar a todas las celdas mi funcion creada
 df = df.applymap(eliminar_parentesis)
@@ -41,9 +41,14 @@ df["n_des"]= llenar_nan_moda(df["n_des"])
 df["n_nub"]= llenar_nan_moda(df["n_nub"])
 df= df.drop(columns= ["evap"])
 
+#Eliminamos fila de media anual ya que no podemos hacer coversion a datetime y tampoco nos interesa
+df= df.drop(index=12)
+#Ordenar Fecha por indice anual
+df["fecha"]= pd.to_datetime(df["fecha"], format= "%Y-%m") 
+df= df.sort_values(by=["fecha"])
 
+print(f"\nLa suma de NAN en dataframe despues de aniadir modas es: ", df.isnull().sum().sum())
+print(df)
 
-print(df.head())
-print(f"\nLa suma de NAN en dataframe es: ", df.isnull().sum().sum())
 #Guardar Dataframe como archivo csv
 df.to_csv("meteo_2024.csv", index=False)
