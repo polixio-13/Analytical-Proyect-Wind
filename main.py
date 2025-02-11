@@ -1,7 +1,7 @@
 import csv
 import pandas as pd
 import json
-from models import eliminar_parentesis
+from models import eliminar_parentesis, eliminar_3, pasar_a_float, llenar_nan_moda
 
 #Covierto mi  fichero json para manipulacion en Python y despues paso a Pandas
 with open ("C:\\Users\\clios\\OneDrive\\Escritorio\\my_proyect\\meteo_data\\meteo_2024", "r") as file:
@@ -19,15 +19,12 @@ df.info()
 df = df.applymap(eliminar_parentesis)
 
 #Elimiar los tres primeros caracteres de column w_racha
-df["w_racha"] = df['w_racha'].apply(lambda x: x[3:])
+df["w_racha"] = eliminar_3(df['w_racha'])
 
 #Covertir resultados string a float y comprobar 
 for column in df.columns:
-    df[column]= df[column].str.replace(",", ".")
-    try:
-        df[column]= df[column].astype(float)
-    except ValueError:
-        pass
+    df[column]= pasar_a_float(df[column])
+   
 
 print("-"*100)
 print("La informacion del dataframe despues de la conversion es: \n")
@@ -36,22 +33,17 @@ df.info()
 #Mostrar valores nulos por columna
 print("\nLA SUMA DE NULOS POR COLUMNA ES: ")  
 print(df.isnull().sum())
+print("\tTOTAL: ",df.isnull().sum().sum())
 
 #Calcular la moda de cada columna y sustituirlos los NaN
-moda_n_cub= df["n_cub"].mode()[0]
-moda_n_des= df["n_des"].mode()[0]
-moda_n_nub= df["n_nub"].mode()[0]
-print(f"\nLa moda de n_cub es {moda_n_cub}")
-print(f"La moda de n_des {moda_n_des}")
-print(f"La moda de n_nub {moda_n_nub}\n")
-df["n_cub"]= df["n_cub"].fillna(moda_n_cub)
-df["n_des"]= df["n_des"].fillna(moda_n_des)
-df["n_nub"]= df["n_nub"].fillna(moda_n_nub)
+df["n_cub"]= llenar_nan_moda(df["n_cub"])
+df["n_des"]= llenar_nan_moda(df["n_des"])
+df["n_nub"]= llenar_nan_moda(df["n_nub"])
 df= df.drop(columns= ["evap"])
 
 
 
 print(df.head())
-df.info()
+print(f"\nLa suma de NAN en dataframe es: ", df.isnull().sum().sum())
 #Guardar Dataframe como archivo csv
 df.to_csv("meteo_2024.csv", index=False)
