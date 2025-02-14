@@ -1,5 +1,5 @@
 import re
-
+import pandas as pd
 #Funcion para eliminar parentesis con informacion
 def eliminar_parentesis(text):
     return re.sub(r'\(.*?\)', '', str(text))
@@ -24,3 +24,9 @@ def llenar_nan_moda(serie):
 #Funcion para eliminar columna
 def eliminar_columna(dataframe, columna_a_eliminar):
     return dataframe.drop(columns= [columna_a_eliminar])
+
+#Funcion para ordenar fechas
+def convertir_y_ordenar(data, nombre_column):
+    data[nombre_column]= pd.to_datetime(data[nombre_column], format= "%Y-%m", errors= "coerce")
+    data= data.sort_values(by= [nombre_column])
+    return data
