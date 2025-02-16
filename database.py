@@ -1,5 +1,8 @@
 import sqlite3
 
-conexion= sqlite3.connect("tabla de datos.db")
+conexion= sqlite3.connect("meteo.db")
 cursor= conexion.cursor()
+
+
+
 

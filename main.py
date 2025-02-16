@@ -1,8 +1,8 @@
 import csv
 import pandas as pd
 import json
+import sqlite3
 from models import eliminar_parentesis, eliminar_3, pasar_a_float, llenar_nan_moda, convertir_y_ordenar
-from database import conexion
 
 #Covierto mi  fichero json para manipulacion en Python y despues paso a Pandas
 with open ("C:\\Users\\clios\\OneDrive\\Escritorio\\my_proyect\\meteo_data\\meteo_2024", "r") as file:
@@ -44,13 +44,20 @@ df= df.drop(columns= ["evap"])
 
 #Eliminamos fila de media anual ya que no podemos hacer coversion a datetime y tampoco nos interesa
 df= df.drop(index=12)
+df= df.drop(columns= ["indicativo"])
 #Ordenar Fecha por indice anual
 df= convertir_y_ordenar(df,"fecha")
+
+#Crear nueva column con año a traves de fecha
+df["año"]= df["fecha"].dt.year
 
 print(f"\nLa suma de NAN en dataframe despues de aniadir modas es: ", df.isnull().sum().sum())
 print(df)
 
-df.to_sql('mi_tabla', conexion, if_exists='replace', index=False)
-
 #Guardar Dataframe como archivo csv
 df.to_csv("meteo_2024.csv", index=False)
+
+conexion= sqlite3.connect("meteo.db")
+df.to_sql('meteo', conexion, if_exists='append', index=False)
+conexion.commit()
+conexion.close()

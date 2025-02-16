@@ -6,7 +6,7 @@ def eliminar_parentesis(text):
 
 #Funcion para elimar 3 primeros caracteres
 def eliminar_3(serie):
-    return serie.apply(lambda x: x[3:])
+    return serie.apply(lambda x: x[3:]if isinstance(x, str) and len(x) > 3 else x)
 
 def pasar_a_float(serie):
     serie = serie.str.replace(",", ".")
