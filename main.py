@@ -7,25 +7,24 @@ from models import eliminar_parentesis, eliminar_3, pasar_a_float, llenar_nan_mo
 #Covierto mi  fichero json para manipulacion en Python y despues paso a Pandas
 with open ("C:\\Users\\clios\\OneDrive\\Escritorio\\my_proyect\\meteo_data\\meteo_2024", "r") as file:
     data_24= json.load(file)
+df= pd.DataFrame(data_24)
+
 with open("C:\\Users\\clios\\OneDrive\\Escritorio\\my_proyect\\meteo_data\\meteo_2023", "r") as file:
-    data_23= json.load(file)
+    data_23= json.load(file)           
+df_23= pd.DataFrame(data_23)
+
 with open("C:\\Users\\clios\\OneDrive\\Escritorio\\my_proyect\\meteo_data\\meteo_2022", "r") as file:
     data_22= json.load(file)
+df_22= pd.DataFrame(data_22)
+
 with open("C:\\Users\\clios\\OneDrive\\Escritorio\\my_proyect\\meteo_data\\meteo_2021", "r") as file:
     data_21= json.load(file)
+df_21= pd.DataFrame(data_21)
+
 with open("C:\\Users\\clios\\OneDrive\\Escritorio\\my_proyect\\meteo_data\\meteo_2020", "r") as file:
     data_20= json.load(file)
-            
-df= pd.DataFrame(data_24)
-df_23= pd.DataFrame(data_23)
-df_22= pd.DataFrame(data_22)
-df_21= pd.DataFrame(data_21)
-df_20= pd.DataFrame(data_20)
+df_20= pd.DataFrame(data_20)           
 
-print("-"*100)
-print(f"la informacion del dataframe es: \n")
-df_20.info()
-print(df_20)
 #Aplicar funcion applymap para aplicar a todas las celdas mi funcion creada
 df = df.applymap(eliminar_parentesis)
 df_23= df_23.applymap(eliminar_parentesis)
@@ -87,7 +86,6 @@ df_23= eliminar_columna(df_23, "evap")
 df_21= eliminar_columna(df_21, "evaporar")
 df_20= eliminar_columna(df_20, "evaporar")
 
-
 df_22= df_22.iloc[:, :-3]
 df_21= df_21.iloc[:, :-2]
 df_20= df_20.iloc[:, :-2]
@@ -102,12 +100,18 @@ df_22= convertir_y_ordenar(df_22, "fecha")
 df_21= convertir_y_ordenar(df_21, "fecha")
 df_20= convertir_y_ordenar(df_20, "fecha")
 
-#Crear nueva column con año a traves de fecha para poder filtrar en BBDD
+#Crear nueva column con año y mes a traves de fecha para poder filtrar en BBDD
 df["año"]= df["fecha"].dt.year
 df_23["año"]= df_23["fecha"].dt.year
 df_22["año"]= df_22["fecha"].dt.year
 df_21["año"]= df_21["fecha"].dt.year
 df_20["año"]= df_20["fecha"].dt.year
+
+df["mes"]= df["fecha"].dt.strftime("%B")
+df_23["mes"]= df_23["fecha"].dt.strftime("%B")
+df_22["mes"]= df_22["fecha"].dt.strftime("%B")
+df_21["mes"]= df_21["fecha"].dt.strftime("%B")
+df_20["mes"]= df_20["fecha"].dt.strftime("%B")
 
 print(f"\nLa suma de NAN en dataframe despues de aniadir modas es: ", df_20.isnull().sum().sum())
 print(df_20)
