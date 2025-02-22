@@ -11,4 +11,4 @@ Creacion de BBDD para guardar en ella todos los DF y poder filtar cualquier info
 Mi proyecto se enfoca en tomar información detallada de los últimos 5 años en Zaragoza sobre el viento, tomando como variables dependientes la humedad y la temperatura al haberlas detectado con un heatmap.
 
 Conclusiones finales en pestaña de analytics con gráfico de dispersión, graficos lineales superpuestos de los 5 aós para mayor legibilidad y finalmente técnica de regresión lineal para terminar observando y
-concluyendo que La pendiente negativa de -0.58 sugiere que, en general, la velocidad del viento ha disminuido en los últimos cinco años y que La pendiente negativa de -0.21 sugiere que, la temperatura también ha disminuido en los últimos cinco años.
+concluyendo que aunque cada año los picos máximos y mínimos tienden a polarizarse cada vez mas, la pendiente negativa de -0.58 sugiere que, en general, la velocidad del viento media ha disminuido en los últimos cinco años y la pendiente negativa de -0.21 sugiere que, la temperatura media también está disminuyendo en los últimos años.
